@@ -1,50 +1,37 @@
 package com.shollmann.weathy.api;
 
 import com.shollmann.weathy.api.baseapi.BaseApi;
+import com.shollmann.weathy.api.baseapi.BaseApiCall;
+import com.shollmann.weathy.api.baseapi.CachePolicy;
+import com.shollmann.weathy.api.baseapi.CallId;
 import com.shollmann.weathy.api.contract.OpenWeatherContract;
+import com.shollmann.weathy.api.model.WeatherReport;
 import com.shollmann.weathy.helper.Constants;
 
+import retrofit.Callback;
 import retrofit.RequestInterceptor;
 
 public class OpenWeatherApi extends BaseApi<OpenWeatherContract> {
 
-    private String baseUrl;
-
     public OpenWeatherApi(String baseUrl) {
         super(baseUrl, OpenWeatherContract.class);
-        this.baseUrl = baseUrl;
     }
 
     @Override
     protected void onRequest(RequestInterceptor.RequestFacade request) {
-        request.addQueryParam("appid", Constants.OPEN_WEATHER_MAP_API_KEY);
+        request.addQueryParam(Constants.OpenWeatherApi.APP_ID_QUERY_PARAM, Constants.OpenWeatherApi.API_KEY);
     }
 
+    public void getMarketingBanner(String cityName, CallId callId, Callback<WeatherReport> callback) {
+        CachePolicy cachePolicy = CachePolicy.CACHE_ELSE_NETWORK;
+        cachePolicy.setCacheKey(String.format("weather_report_for_%1$s", cityName));
+        cachePolicy.setCacheTTL(Constants.Time.TEN_MINUTES);
 
-//    public void getSuggestionFor(String word, CallId callId, Callback<Autosuggestion> callback) {
-//        String mostAccurateLocationUrl = LocationHelper.getCurrentStateOrCountry();
-//
-//        CachePolicy cachePolicy = CachePolicy.CACHE_ELSE_NETWORK;
-//        cachePolicy.setCacheKey(String.format("autocomplete_for_%1$s_in_%2$s", word, mostAccurateLocationUrl));
-//        cachePolicy.setCacheTTL(Constants.Time.TWO_DAYS);
-//
-//        BaseApiCall<Autosuggestion> apiCall = registerCall(callId, cachePolicy, callback, Autosuggestion.class);
-//        if (apiCall != null && apiCall.requiresNetworkCall()) {
-//            getService().getSuggestionFor(mostAccurateLocationUrl, word, apiCall);
-//        }
-//    }
-//
-//    public void getMarketingBanner(String countryUrl, String layout, CallId callId, Callback<BannerResponse> callback) {
-//        CachePolicy cachePolicy = CachePolicy.CACHE_ELSE_NETWORK;
-//        cachePolicy.setCacheKey(String.format("marketingBanner_for_%1$s_in_%2$s", countryUrl, layout));
-//        cachePolicy.setCacheTTL(Constants.Time.ONE_HOUR);
-//
-//        BaseApiCall<BannerResponse> apiCall = registerCall(callId, cachePolicy, callback, BannerResponse.class);
-//
-//        if (apiCall != null && apiCall.requiresNetworkCall()) {
-//            getService().getMarketingBanner(countryUrl, layout, apiCall);
-//        }
-//    }
+        BaseApiCall<WeatherReport> apiCall = registerCall(callId, cachePolicy, callback, WeatherReport.class);
 
+        if (apiCall != null && apiCall.requiresNetworkCall()) {
+            getService().getWeatherForCityName(cityName, apiCall);
+        }
+    }
 
 }

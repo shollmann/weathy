@@ -14,9 +14,8 @@ public class WeathyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        this.openWeatherApi = new OpenWeatherApi(Constants.OPEN_WEATHER_MAP_URL);
-
+        this.instance = this;
+        this.openWeatherApi = new OpenWeatherApi(Constants.OpenWeatherApi.URL);
         this.cachingDbHelper = new CachingDbHelper(getApplicationContext());
     }
 
@@ -26,5 +25,9 @@ public class WeathyApplication extends Application {
 
     public CachingDbHelper getCachingDbHelper() {
         return cachingDbHelper;
+    }
+
+    public OpenWeatherApi getOpenWeatherApi() {
+        return openWeatherApi;
     }
 }
