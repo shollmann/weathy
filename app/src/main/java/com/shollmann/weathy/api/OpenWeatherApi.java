@@ -20,9 +20,10 @@ public class OpenWeatherApi extends BaseApi<OpenWeatherContract> {
     @Override
     protected void onRequest(RequestInterceptor.RequestFacade request) {
         request.addQueryParam(Constants.OpenWeatherApi.APP_ID_QUERY_PARAM, Constants.OpenWeatherApi.API_KEY);
+        request.addQueryParam(Constants.OpenWeatherApi.UNITS_QUERY_PARAM, Constants.OpenWeatherApi.METRIC);
     }
 
-    public void getMarketingBanner(String cityName, CallId callId, Callback<WeatherReport> callback) {
+    public void getWeatherForCityName(String cityName, CallId callId, Callback<WeatherReport> callback) {
         CachePolicy cachePolicy = CachePolicy.CACHE_ELSE_NETWORK;
         cachePolicy.setCacheKey(String.format("weather_report_for_%1$s", cityName));
         cachePolicy.setCacheTTL(Constants.Time.TEN_MINUTES);

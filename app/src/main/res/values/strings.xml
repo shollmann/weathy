@@ -93,4 +93,5 @@
     <string name="min">Min</string>
     <string name="max">Max</string>
     <string name="humidity">Humidity</string>
+    <string name="error_get_current_weather">Sorry, there was an error getting the weather for you :(</string>
 </resources>

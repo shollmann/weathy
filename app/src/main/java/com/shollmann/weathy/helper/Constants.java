@@ -21,5 +21,17 @@ public class Constants {
         public static final String API_KEY = "c9347df1453d44f36c64fe861d46e36c";
         public static final String URL = "http://api.openweathermap.org";
         public static final String APP_ID_QUERY_PARAM = "appid";
+        public static final String UNITS_QUERY_PARAM = "units";
+        public static final String METRIC = "metric";
+    }
+
+    public class WeatherType {
+        public static final String RAIN = "Rain";
+        public static final String CLOUDS = "Clouds";
+        public static final String CLEAR = "Clear";
+        public static final String DRIZZLE = "Drizzle";
+        public static final String THUDERSTORM = "Thunderstorm";
+        public static final String HAZE = "Haze";
+        public static final String SNOW = "Snow";
     }
 }

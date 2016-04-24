@@ -6,8 +6,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shollmann.weathy.R;
-import com.shollmann.weathy.helper.ResourcesHelper;
 import com.shollmann.weathy.api.model.MainInformation;
+import com.shollmann.weathy.helper.ResourcesHelper;
 
 public class WeatherInformationView extends LinearLayout {
     private TextView txtFirstTitle;
@@ -33,6 +33,8 @@ public class WeatherInformationView extends LinearLayout {
     }
 
     private void initialize() {
+        inflate(getContext(), R.layout.view_weather_info, this);
+
         txtFirstTitle = (TextView) findViewById(R.id.weather_info_first_title);
         txtFirstValue = (TextView) findViewById(R.id.weather_info_first_value);
 
@@ -45,10 +47,10 @@ public class WeatherInformationView extends LinearLayout {
 
     public void setWeatherInfo(MainInformation mainInformation) {
         txtFirstTitle.setText(ResourcesHelper.getString(R.string.min));
-        txtFirstValue.setText(String.valueOf(mainInformation.getTempMin()) + "C"); //TODO remove string hardcoding
+        txtFirstValue.setText(String.valueOf(mainInformation.getIntTemperatureMin()) + "C"); //TODO remove string hardcoding
 
         txtSecondTitle.setText(ResourcesHelper.getString(R.string.max));
-        txtSecondValue.setText(String.valueOf(mainInformation.getTempMax()) + "C"); //TODO remove string hardcoding
+        txtSecondValue.setText(String.valueOf(mainInformation.getIntTemperatureMax()) + "C"); //TODO remove string hardcoding
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.humidity));
         txtThirdValue.setText(String.valueOf(mainInformation.getHumidity()) + "%"); //TODO remove string hardcoding
