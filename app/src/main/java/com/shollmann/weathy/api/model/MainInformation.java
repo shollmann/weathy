@@ -1,9 +1,9 @@
 
-package com.shollmann.weathy.model;
+package com.shollmann.weathy.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Main {
+public class MainInformation {
 
     private double temp;
     private int pressure;

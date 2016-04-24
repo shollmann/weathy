@@ -1,5 +1,5 @@
 
-package com.shollmann.weathy.model;
+package com.shollmann.weathy.api.model;
 
 public class Clouds {
     private int all;
