@@ -1,11 +1,11 @@
 
-package com.shollmann.weathy.model;
+package com.shollmann.weathy.api.model;
 
 public class WeatherReport {
-    private Coord coord;
+    private Coordinates coord;
     private Weather weather;
     private String base;
-    private Main main;
+    private MainInformation main;
     private int visibility;
     private Wind wind;
     private Clouds clouds;
@@ -16,11 +16,11 @@ public class WeatherReport {
     private int cod;
 
 
-    public Coord getCoord() {
+    public Coordinates getCoord() {
         return coord;
     }
 
-    public void setCoord(Coord coord) {
+    public void setCoord(Coordinates coord) {
         this.coord = coord;
     }
 
@@ -41,11 +41,11 @@ public class WeatherReport {
         this.base = base;
     }
 
-    public Main getMain() {
+    public MainInformation getMain() {
         return main;
     }
 
-    public void setMain(Main main) {
+    public void setMain(MainInformation main) {
         this.main = main;
     }
 

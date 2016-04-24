@@ -1,7 +1,7 @@
 
-package com.shollmann.weathy.model;
+package com.shollmann.weathy.api.model;
 
-public class Coord {
+public class Coordinates {
     private double lon;
     private double lat;
 
