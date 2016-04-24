@@ -1,9 +1,11 @@
-package com.shollmann.weathy;
+package com.shollmann.weathy.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+
+import com.shollmann.weathy.R;
 
 public class HomeActivity extends AppCompatActivity {
 
