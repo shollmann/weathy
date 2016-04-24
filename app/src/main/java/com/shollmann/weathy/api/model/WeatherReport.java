@@ -1,9 +1,11 @@
 
 package com.shollmann.weathy.api.model;
 
+import java.util.ArrayList;
+
 public class WeatherReport {
     private Coordinates coord;
-    private Weather weather;
+    private ArrayList<Weather> weather;
     private String base;
     private MainInformation main;
     private int visibility;
@@ -25,11 +27,17 @@ public class WeatherReport {
     }
 
     public Weather getWeather() {
+        if (weather != null && !weather.isEmpty()) {
+            return weather.get(0);
+        }
+        return null;
+    }
+
+    public ArrayList<Weather> getWeatherList() {
         return weather;
     }
 
-
-    public void setWeather(Weather weather) {
+    public void setWeather(ArrayList<Weather> weather) {
         this.weather = weather;
     }
 
