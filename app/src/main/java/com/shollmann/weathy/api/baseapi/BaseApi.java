@@ -4,6 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.shollmann.weathy.api.ExcludedFromAPISerialization;
 import com.shollmann.weathy.helper.Constants;
 import com.shollmann.weathy.ui.WeathyApplication;
 import com.squareup.okhttp.Cache;
@@ -43,7 +44,7 @@ public abstract class BaseApi<T> {
     }
 
     private void initializeHttpCache(long dirSize) {
-        String cacheDirectoryName = this.getClass().getSimpleName() + "Cache";
+        String cacheDirectoryName = this.getClass().getSimpleName() + Constants.CACHE;
         File cacheDirectory = new File(WeathyApplication.getApplication().getCacheDir(), cacheDirectoryName);
         cache = new Cache(cacheDirectory, dirSize);
     }
@@ -192,7 +193,7 @@ public abstract class BaseApi<T> {
     protected TypedInput generateJsonTypedInput(Object object) {
         byte[] requestBytes = new byte[0];
         try {
-            requestBytes = (new Gson()).toJson(object).getBytes("UTF-8");
+            requestBytes = (new Gson()).toJson(object).getBytes(Constants.UTF_8);
         } catch (Throwable t) {
 //            LogInternal.error(t.toString());
         }

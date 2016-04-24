@@ -2,26 +2,23 @@ package com.shollmann.weathy.api;
 
 import com.shollmann.weathy.api.baseapi.BaseApi;
 import com.shollmann.weathy.api.contract.OpenWeatherContract;
+import com.shollmann.weathy.helper.Constants;
+
+import retrofit.RequestInterceptor;
 
 public class OpenWeatherApi extends BaseApi<OpenWeatherContract> {
 
     private String baseUrl;
-    private int environment;
 
-    public OpenWeatherApi(String baseUrl, int environment) {
+    public OpenWeatherApi(String baseUrl) {
         super(baseUrl, OpenWeatherContract.class);
         this.baseUrl = baseUrl;
-        this.environment = environment;
     }
 
-    public void setEnvironment(int environment) {
-        this.environment = environment;
+    @Override
+    protected void onRequest(RequestInterceptor.RequestFacade request) {
+        request.addQueryParam("appid", Constants.OPEN_WEATHER_MAP_API_KEY);
     }
-
-//    @Override
-//    protected void onRequest(RequestInterceptor.RequestFacade request) {
-//        request.addQueryParam("appid", Constants.OPEN_WEATHER_MAP_API_KEY);
-//    }
 
 
 //    public void getSuggestionFor(String word, CallId callId, Callback<Autosuggestion> callback) {

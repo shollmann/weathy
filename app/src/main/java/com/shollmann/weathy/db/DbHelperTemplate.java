@@ -11,6 +11,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.shollmann.weathy.helper.Constants;
 
 import java.lang.reflect.Type;
 
@@ -68,42 +69,7 @@ public abstract class DbHelperTemplate {
         db = null;
     }
 
-    public void insert(String key, APIResponse response) {
-        insert(key, response, 0);
-    }
 
-    public void insert(String key, APIResponse response, long expirationOffset) {
-        try {
-            ContentValues cv = new ContentValues();
-            cv.put(columnKey, key);
-            cv.put(columnData, gson.toJson(response));
-            cv.put(columnDate, System.currentTimeMillis() + (expirationOffset * 1000));
-
-            int rows = db.update(tableName, cv, columnKey + "=?", new String[]{key});
-            if (rows == 0) {
-                db.insert(tableName, columnKey, cv);
-            }
-        } catch (Throwable t) {
-            Crashlytics crashlyticsInstance = Crashlytics.getInstance();
-            if (crashlyticsInstance != null) {
-                StringBuilder errorMessage = new StringBuilder();
-                if (key != null) {
-                    errorMessage.append("Key: " + key + " -- ");
-                }
-                if (response != null) {
-                    if (response.getRequestId() != null) {
-                        errorMessage.append("RequestId: " + response.getRequestId() + " -- ");
-                    }
-                    errorMessage.append("Status Code: " + String.valueOf(response.getStatusCode()) + " -- ");
-                    if (response.getStatusMessage() != null) {
-                        errorMessage.append("Status Message: " + response.getStatusMessage() + " -- ");
-                    }
-                }
-                CrashlyticsHelper.log("Error while writing cache: " + errorMessage.toString());
-                CrashlyticsHelper.logException(t);
-            }
-        }
-    }
     public void insert(String key, Object data, long expirationOffset) {
         try {
             ContentValues cv = new ContentValues();
@@ -116,8 +82,6 @@ public abstract class DbHelperTemplate {
                 db.insert(tableName, columnKey, cv);
             }
         } catch (Throwable t) {
-            CrashlyticsHelper.log("Error while writing cache: Key: " + key);
-            CrashlyticsHelper.logException(t);
         }
     }
 
@@ -186,44 +150,9 @@ public abstract class DbHelperTemplate {
                 json = c.getString(c.getColumnIndex(columnData));
                 response = gson.fromJson(json, type);
             } catch (JsonSyntaxException jse) {
-//                CrashlyticsHelper.log(json);
-//                CrashlyticsHelper.logException(jse);
 //                LogInternal.error("Unable to parse Json: " + json);
             } catch (Throwable e) {
-//                CrashlyticsHelper.log(json);
-//                CrashlyticsHelper.logException(e);
 //                LogInternal.error("Unable to read row");
-            }
-        }
-        c.close();
-        return response;
-    }
-
-    public APIResponse getAPIResponse(String key, Type type, long ttl) {
-        Cursor c = db.query(tableName, new String[]{columnKey, columnData, columnDate},
-                columnKey + "=?", new String[]{key}, null, null, null);
-        APIResponse response = null;
-        if (c.moveToFirst()) {
-            String json = Constants.EMPTY_STRING;
-            try {
-                json = c.getString(c.getColumnIndex(columnData));
-                long date = c.getLong(c.getColumnIndex(columnDate));
-                response = gson.fromJson(json, type);
-                int seconds = DateUtils.diffSeconds(date);
-                response.setCache(true);
-
-                if (seconds > ttl) {
-                    invalidate(key);
-                    response.setExpired(true);
-                }
-            } catch (JsonSyntaxException jse) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(jse);
-                LogInternal.error("Unable to parse Json: " + json);
-            } catch (Throwable e) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(e);
-                LogInternal.error("Unable to read row");
             }
         }
         c.close();
@@ -244,13 +173,9 @@ public abstract class DbHelperTemplate {
                 long date = c.getLong(c.getColumnIndex(columnDate));
                 response = new DbItem<T>((T) gson.fromJson(json, type), date);
             } catch (JsonSyntaxException jse) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(jse);
-                LogInternal.error(String.format("Unable to parse Json: %s as %s", json, type.toString()));
+//                LogInternal.error(String.format("Unable to parse Json: %s as %s", json, type.toString()));
             } catch (Throwable e) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(e);
-                LogInternal.error("Unable to read row");
+//                LogInternal.error("Unable to read row");
             }
         }
         c.close();
@@ -266,13 +191,9 @@ public abstract class DbHelperTemplate {
                 json = c.getString(c.getColumnIndex(columnData));
                 response = gson.fromJson(json, clazz);
             } catch (JsonSyntaxException jse) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(jse);
-                LogInternal.error(String.format("Unable to parse Json: %s as %s", json, clazz.toString()));
+//                LogInternal.error(String.format("Unable to parse Json: %s as %s", json, clazz.toString()));
             } catch (Throwable e) {
-                CrashlyticsHelper.log(json);
-                CrashlyticsHelper.logException(e);
-                LogInternal.error("Unable to read row");
+//                LogInternal.error("Unable to read row");
             }
         }
         c.close();

@@ -1,5 +1,9 @@
 package com.shollmann.weathy.api.baseapi;
 
+import com.shollmann.weathy.db.CachingDbHelper;
+import com.shollmann.weathy.db.DbItem;
+import com.shollmann.weathy.ui.WeathyApplication;
+
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
@@ -23,7 +27,7 @@ public class BaseApiCall<T> implements Callback<T> {
     private RetrofitError pendingError = null;
 
     public BaseApiCall(BaseApi baseApi, CallId callId, CachePolicy cachePolicy, Callback<T> callback, Type responseType) {
-        this.legacyCachingDb = GrogApplication.getInstance().getCachingDbHelper();
+        this.legacyCachingDb = WeathyApplication.getApplication().getCachingDbHelper();
         this.baseApi = baseApi;
         this.callId = callId;
         this.cachePolicy = cachePolicy;

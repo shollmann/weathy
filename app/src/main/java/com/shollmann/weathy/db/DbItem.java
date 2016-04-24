@@ -1,6 +1,6 @@
 package com.shollmann.weathy.db;
 
-import com.olx.olx.util.DateUtils;
+import com.shollmann.weathy.helper.DateUtils;
 
 public class DbItem<T> {
 
