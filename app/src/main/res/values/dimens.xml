@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="small_space">4dp</dimen>
+    <dimen name="home_current_weather_icon_size">110dp</dimen>
+    <dimen name="medium_space">8dp</dimen>
+    <dimen name="large_space">16dp</dimen>
+</resources>
