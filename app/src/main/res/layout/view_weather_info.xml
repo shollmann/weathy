@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/weather_info_size">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/large_space">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weather_info_first_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_space"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/min"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_material_subheading"/>
+
+            <TextView
+                android:id="@+id/weather_info_first_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="17*C"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_material_header"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weather_info_second_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_space"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/max"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_material_subheading"/>
+
+            <TextView
+                android:id="@+id/weather_info_second_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="32*C"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_material_header"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weather_info_third_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_space"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/humidity"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_material_subheading"/>
+
+            <TextView
+                android:id="@+id/weather_info_third_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="35%"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_material_header"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
