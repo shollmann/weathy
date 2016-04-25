@@ -70,8 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void updateWeatherInfo(WeatherReport weatherReport) {
-        viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
-        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + "*C");//TODO Remove hardcoded string
+        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + "C");//TODO Remove hardcoded string
         txtCurrentLocation.setText(weatherReport.getName());
         if (weatherReport.getWeather() != null) {
             imgCurrentWeatherIcon.setImageDrawable(getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
@@ -79,6 +78,9 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             imgCurrentWeatherIcon.setVisibility(View.GONE);
         }
+
+        viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
+        viewBasicWeatherInformation.setVisibility(View.VISIBLE);
     }
 
     private Drawable getCurrentWeatherDrawable(String weatherType) {
@@ -89,11 +91,11 @@ public class HomeActivity extends AppCompatActivity {
         } else if (Constants.WeatherType.CLOUDS.equalsIgnoreCase(weatherType)) {
             return ResourcesHelper.getDrawable(R.drawable.ic_cloud);
         } else if (Constants.WeatherType.DRIZZLE.equalsIgnoreCase(weatherType)) {
-            return ResourcesHelper.getDrawable(R.drawable.ic_snow); //TODO Change for drizzle
+            return ResourcesHelper.getDrawable(R.drawable.ic_drizzle);
         } else if (Constants.WeatherType.THUDERSTORM.equalsIgnoreCase(weatherType)) {
-            return ResourcesHelper.getDrawable(R.drawable.ic_rain); //TODO Change for thunder storm
+            return ResourcesHelper.getDrawable(R.drawable.ic_storm);
         } else if (Constants.WeatherType.HAZE.equalsIgnoreCase(weatherType)) {
-            return ResourcesHelper.getDrawable(R.drawable.ic_snow); //TODO change for haze
+            return ResourcesHelper.getDrawable(R.drawable.ic_haze);
         } else if (Constants.WeatherType.SNOW.equalsIgnoreCase(weatherType)) {
             return ResourcesHelper.getDrawable(R.drawable.ic_snow);
         } else {
