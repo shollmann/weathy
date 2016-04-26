@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/home_coordinator_layout"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".HomeActivity">
+    android:background="@color/background"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:title="@string/app_name"
+        app:titleTextColor="@color/white"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:title="@string/app_name"
-            app:titleTextColor="@color/white"/>
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/home_coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/large_space"
             android:paddingLeft="@dimen/large_space"
-            android:paddingRight="@dimen/large_space">
+            android:paddingRight="@dimen/large_space"
+            app:layout_behavior="com.shollmann.weathy.ui.behavior.DefaultCoordinatorLayoutBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,5 +77,5 @@
                     android:visibility="gone"/>
             </FrameLayout>
         </RelativeLayout>
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
