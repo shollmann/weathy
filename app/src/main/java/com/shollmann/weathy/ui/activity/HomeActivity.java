@@ -1,6 +1,9 @@
 package com.shollmann.weathy.ui.activity;
 
 import android.animation.Animator;
+import android.app.ActivityManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -44,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         findViews();
         weatherApi = WeathyApplication.getApplication().getOpenWeatherApi();
+        setupTaskDescription();
         setupToolbar();
         setOnClickListener();
         getCurrentWeather();
@@ -112,6 +116,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             displayAdvanceWeatherInfo(true);
         } else {
             displayAdvanceWeatherInfo(false);
+        }
+    }
+
+    private void setupTaskDescription() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Bitmap icon = BitmapFactory.decodeResource(ResourcesHelper.getResources(),
+                    R.drawable.ic_sun);
+            ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(ResourcesHelper.getString(R.string.app_name), icon, ResourcesHelper.getResources().getColor(R.color.colorPrimary));
+            this.setTaskDescription(taskDescription);
         }
     }
 
