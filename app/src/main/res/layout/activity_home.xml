@@ -33,7 +33,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/home_basic_weather_info"
+                android:layout_above="@+id/home_weather_info_container"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -60,19 +60,24 @@
                     android:textSize="@dimen/text_material_title"/>
             </LinearLayout>
 
-            <com.shollmann.weathy.ui.view.WeatherInformationView
-                android:id="@+id/home_basic_weather_info"
+            <FrameLayout
+                android:id="@+id/home_weather_info_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:visibility="invisible"/>
+                android:layout_alignParentBottom="true">
 
-            <com.shollmann.weathy.ui.view.WeatherInformationView
-                android:id="@+id/home_advance_weather_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:visibility="gone"/>
+                <com.shollmann.weathy.ui.view.WeatherInformationView
+                    android:id="@+id/home_basic_weather_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
+
+                <com.shollmann.weathy.ui.view.WeatherInformationView
+                    android:id="@+id/home_advance_weather_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+            </FrameLayout>
         </RelativeLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

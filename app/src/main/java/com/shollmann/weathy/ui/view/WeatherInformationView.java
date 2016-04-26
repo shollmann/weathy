@@ -12,6 +12,8 @@ import com.shollmann.weathy.api.model.Wind;
 import com.shollmann.weathy.helper.ResourcesHelper;
 
 public class WeatherInformationView extends LinearLayout {
+    private static final int NO_ELEVATION = 0;
+
     private TextView txtFirstTitle;
     private TextView txtFirstValue;
     private TextView txtSecondTitle;
@@ -71,7 +73,7 @@ public class WeatherInformationView extends LinearLayout {
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.pressure));
         txtThirdValue.setText(String.valueOf(mainInformation.getPressure()) + "hpa"); //TODO remove string hardcoding
 
-//        cardviewContainer.setCardBackgroundColor(ResourcesHelper.getResources().getColor(R.color.lightColorAccent));
+        cardviewContainer.setCardElevation(NO_ELEVATION);
     }
 
 }

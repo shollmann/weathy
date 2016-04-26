@@ -110,21 +110,57 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.home_basic_weather_info) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                View viewToReveal = viewAdvanceWeatherInformation;
-
-                int centerX = (viewToReveal.getLeft() + viewToReveal.getRight()) / 2;
-                int centerY = (viewToReveal.getTop() + viewToReveal.getBottom()) / 2;
-
-                int startRadius = 0;
-                int endRadius = Math.max(view.getWidth(), view.getHeight());
-
-                Animator anim = ViewAnimationUtils.createCircularReveal(viewToReveal, centerX, centerY, startRadius, endRadius);
-                anim.setInterpolator(new AccelerateDecelerateInterpolator());
-                anim.setDuration(CIRCULAR_REVEAL_DURATION);
-                anim.start();
-                viewToReveal.setVisibility(View.VISIBLE);
-            }
+            displayAdvanceWeatherInfo(true);
+        } else {
+            displayAdvanceWeatherInfo(false);
         }
+    }
+
+    private void displayAdvanceWeatherInfo(boolean isDisplay) {
+        View baseView = viewBasicWeatherInformation;
+        View viewToReveal = viewAdvanceWeatherInformation;
+
+        int centerX = (viewToReveal.getLeft() + viewToReveal.getRight()) / 2;
+        int centerY = (viewToReveal.getTop() + viewToReveal.getBottom()) / 2;
+        int startRadius = 0;
+        int endRadius = Math.max(baseView.getWidth(), baseView.getHeight());
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Animator anim = ViewAnimationUtils.createCircularReveal(viewToReveal, centerX, centerY, isDisplay ? startRadius : endRadius, isDisplay ? endRadius : startRadius);
+            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+            anim.setDuration(CIRCULAR_REVEAL_DURATION);
+            if (!isDisplay) {
+                hideAdvanceInfoAfterAnimation(anim);
+            }
+            anim.start();
+            viewToReveal.setVisibility(View.VISIBLE);
+        } else {
+            viewToReveal.setVisibility(isDisplay ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void hideAdvanceInfoAfterAnimation(Animator anim) {
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                viewAdvanceWeatherInformation.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 }
