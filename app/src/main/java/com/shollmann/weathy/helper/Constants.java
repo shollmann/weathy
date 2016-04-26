@@ -11,6 +11,10 @@ public class Constants {
         public static final long TEN_MINUTES = 10 * ONE_MINUTE;
     }
 
+    public class ErrorCode {
+        public static final long _404 = 404;
+    }
+
     public class Size {
         public static final long ONE_KIBIBYTE = 1024;
         public static final long ONE_MEBIBYTE = ONE_KIBIBYTE * 1024;

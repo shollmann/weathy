@@ -2,16 +2,22 @@ package com.shollmann.weathy.ui.activity;
 
 import android.animation.Animator;
 import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +36,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
     private static final int CIRCULAR_REVEAL_DURATION = 400;
 
     private Toolbar toolbar;
@@ -52,7 +58,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setupTaskDescription();
         setupToolbar();
         setOnClickListener();
-        getCurrentWeather();
+        //TODO handle previous search
+        getCurrentWeather("Capital Federal");
     }
 
     private void setOnClickListener() {
@@ -60,10 +67,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         viewAdvanceWeatherInformation.setOnClickListener(this);
     }
 
-    private void getCurrentWeather() {
+    private void getCurrentWeather(String query) {
         Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_SHORT).show();
         CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
-        weatherApi.getWeatherForCityName("ushuaia", weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
+        weatherApi.getWeatherForCityName(query.trim(), weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
     }
 
     private Callback<WeatherReport> generateGetCurrentWeatherForCityCallback() {
@@ -82,21 +89,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateWeatherInfo(WeatherReport weatherReport) {
-        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
-        txtCurrentLocation.setText(weatherReport.getName());
-        txtCurrentTemperature.setVisibility(View.VISIBLE);
-        txtCurrentLocation.setVisibility(View.VISIBLE);
-        if (weatherReport.getWeather() != null) {
-            imgCurrentWeatherIcon.setImageDrawable(ResourcesHelper.getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
-            imgCurrentWeatherIcon.setVisibility(View.VISIBLE);
-        } else {
-            imgCurrentWeatherIcon.setVisibility(View.GONE);
-        }
+        if (weatherReport.getCod() != Constants.ErrorCode._404) {
+            txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
+            txtCurrentLocation.setText(weatherReport.getName());
+            txtCurrentTemperature.setVisibility(View.VISIBLE);
+            txtCurrentLocation.setVisibility(View.VISIBLE);
+            if (weatherReport.getWeather() != null) {
+                imgCurrentWeatherIcon.setImageDrawable(ResourcesHelper.getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
+                imgCurrentWeatherIcon.setVisibility(View.VISIBLE);
+            } else {
+                imgCurrentWeatherIcon.setVisibility(View.GONE);
+            }
 
-        viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
-        viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
-        viewBasicWeatherInformation.setVisibility(View.VISIBLE);
-        txtAdvanceInfoHint.setVisibility(View.VISIBLE);
+            viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
+            viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
+            viewBasicWeatherInformation.setVisibility(View.VISIBLE);
+            txtAdvanceInfoHint.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupToolbar() {
@@ -179,5 +188,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem menuSearch = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuSearch);
+        searchView.setOnQueryTextListener(this);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        getCurrentWeather(query);
+        hideKeyboard();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) WeathyApplication.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 }

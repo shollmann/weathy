@@ -69,7 +69,7 @@ public class WeatherInformationView extends LinearLayout {
         txtFirstValue.setText(String.valueOf(windInformation.getIntSpeed()) + Constants.SpecialChars.KM_PER_HOUR);
 
         txtSecondTitle.setText(ResourcesHelper.getString(R.string.wind_direction));
-        txtSecondValue.setText(String.valueOf(windInformation.getDegrees()) + Constants.SpecialChars.DEGREE);
+        txtSecondValue.setText(String.valueOf(windInformation.getIntDegrees()) + Constants.SpecialChars.DEGREE);
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.pressure));
         txtThirdValue.setText(String.valueOf(mainInformation.getPressure()) + Constants.SpecialChars.HECTOPASCALS);
