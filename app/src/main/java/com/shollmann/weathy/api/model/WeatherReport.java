@@ -1,9 +1,10 @@
 
 package com.shollmann.weathy.api.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WeatherReport {
+public class WeatherReport implements Serializable {
     private Coordinates coord;
     private ArrayList<Weather> weather;
     private String base;

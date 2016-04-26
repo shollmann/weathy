@@ -1,7 +1,9 @@
 
 package com.shollmann.weathy.api.model;
 
-public class Wind {
+import java.io.Serializable;
+
+public class Wind implements Serializable{
     private Double speed;
     private int deg;
 

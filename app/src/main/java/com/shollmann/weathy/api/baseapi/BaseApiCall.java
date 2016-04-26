@@ -13,7 +13,7 @@ import retrofit.client.Response;
 
 public class BaseApiCall<T> implements Callback<T> {
 
-    private CachingDbHelper legacyCachingDb;
+    private CachingDbHelper cachingDb;
     BaseApi baseApi;
     private CallId callId;
     private CachePolicy cachePolicy;
@@ -27,7 +27,7 @@ public class BaseApiCall<T> implements Callback<T> {
     private RetrofitError pendingError = null;
 
     public BaseApiCall(BaseApi baseApi, CallId callId, CachePolicy cachePolicy, Callback<T> callback, Type responseType) {
-        this.legacyCachingDb = WeathyApplication.getApplication().getCachingDbHelper();
+        this.cachingDb = WeathyApplication.getApplication().getCachingDbHelper();
         this.baseApi = baseApi;
         this.callId = callId;
         this.cachePolicy = cachePolicy;
@@ -40,7 +40,7 @@ public class BaseApiCall<T> implements Callback<T> {
 //            //LogIntternal.logBaseApiCall("requires network call", callId.toString());
             return true;
         }
-        DbItem<T> cachedResponse = legacyCachingDb.getDbItem(cachePolicy.getCacheKey(), responseType);
+        DbItem<T> cachedResponse = cachingDb.getDbItem(cachePolicy.getCacheKey(), responseType);
         if (cachedResponse == null) {
 //            //LogIntternal.logBaseApiCall("requires network call", callId.toString());
             return true;
@@ -67,7 +67,7 @@ public class BaseApiCall<T> implements Callback<T> {
         if (response != null) { //response != null means that the result is from net and not from cache
             if (cachePolicy.getCacheKey() != null && result instanceof Serializable) {
                 //LogIntternal.logBaseApiCall("updating cache-db", callId.toString(), Log.DEBUG);
-                legacyCachingDb.insert(cachePolicy.getCacheKey(), (Serializable) result, cachePolicy.getCacheTTL());
+                cachingDb.insert(cachePolicy.getCacheKey(), (Serializable) result, cachePolicy.getCacheTTL());
             } else {
                 //LogIntternal.logBaseApiCall("skipping cache-db update", callId.toString(), Log.DEBUG);
             }
@@ -92,7 +92,7 @@ public class BaseApiCall<T> implements Callback<T> {
         if (!isCancelled) {
             if (callback != null) {
                 if (cachePolicy == CachePolicy.CACHE_ELSE_NETWORK_ELSE_ANY_CACHE || cachePolicy == CachePolicy.NETWORK_ELSE_ANY_CACHE) {
-                    DbItem<T> cachedResponse = legacyCachingDb.getDbItem(cachePolicy.getCacheKey(), responseType);
+                    DbItem<T> cachedResponse = cachingDb.getDbItem(cachePolicy.getCacheKey(), responseType);
                     if (cachedResponse == null) {
                         //LogIntternal.logBaseApiCall("failure response", callId.toString());
                         callback.failure(error);

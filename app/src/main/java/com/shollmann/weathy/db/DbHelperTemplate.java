@@ -171,7 +171,7 @@ public abstract class DbHelperTemplate {
             try {
                 json = c.getString(c.getColumnIndex(columnData));
                 long date = c.getLong(c.getColumnIndex(columnDate));
-                response = new DbItem<T>((T) gson.fromJson(json, type), date);
+                response = new DbItem<>((T) gson.fromJson(json, type), date);
             } catch (JsonSyntaxException jse) {
 //                LogInternal.error(String.format("Unable to parse Json: %s as %s", json, type.toString()));
             } catch (Throwable e) {

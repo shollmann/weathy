@@ -1,6 +1,9 @@
 package com.shollmann.weathy.ui.activity;
 
 import android.animation.Animator;
+import android.app.ActivityManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -18,6 +21,7 @@ import com.shollmann.weathy.api.baseapi.CallId;
 import com.shollmann.weathy.api.baseapi.CallOrigin;
 import com.shollmann.weathy.api.baseapi.CallType;
 import com.shollmann.weathy.api.model.WeatherReport;
+import com.shollmann.weathy.helper.Constants;
 import com.shollmann.weathy.helper.ResourcesHelper;
 import com.shollmann.weathy.ui.WeathyApplication;
 import com.shollmann.weathy.ui.view.WeatherInformationView;
@@ -32,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
     private TextView txtCurrentTemperature;
     private TextView txtCurrentLocation;
+    private TextView txtAdvanceInfoHint;
     private ImageView imgCurrentWeatherIcon;
     private WeatherInformationView viewBasicWeatherInformation;
     private WeatherInformationView viewAdvanceWeatherInformation;
@@ -44,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         findViews();
         weatherApi = WeathyApplication.getApplication().getOpenWeatherApi();
+        setupTaskDescription();
         setupToolbar();
         setOnClickListener();
         getCurrentWeather();
@@ -55,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getCurrentWeather() {
-//    showUpdating();
+        Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_SHORT).show();
         CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
         weatherApi.getWeatherForCityName("ushuaia", weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
     }
@@ -65,21 +71,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void success(WeatherReport weatherReport, Response response) {
-//                    hideUpdating();
                 updateWeatherInfo(weatherReport);
             }
 
             @Override
             public void failure(RetrofitError error) {
-//                    hideUpdating();
-                Snackbar.make(coordinatorLayout, R.string.error_get_current_weather, Snackbar.LENGTH_LONG);
+                Snackbar.make(coordinatorLayout, R.string.error_get_current_weather, Snackbar.LENGTH_LONG).show();
             }
         };
     }
 
     private void updateWeatherInfo(WeatherReport weatherReport) {
-        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + "C");//TODO Remove hardcoded string
+        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
         txtCurrentLocation.setText(weatherReport.getName());
+        txtCurrentTemperature.setVisibility(View.VISIBLE);
+        txtCurrentLocation.setVisibility(View.VISIBLE);
         if (weatherReport.getWeather() != null) {
             imgCurrentWeatherIcon.setImageDrawable(ResourcesHelper.getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
             imgCurrentWeatherIcon.setVisibility(View.VISIBLE);
@@ -88,9 +94,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
-
         viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
         viewBasicWeatherInformation.setVisibility(View.VISIBLE);
+        txtAdvanceInfoHint.setVisibility(View.VISIBLE);
     }
 
     private void setupToolbar() {
@@ -105,14 +111,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.home_coordinator_layout);
         viewBasicWeatherInformation = (WeatherInformationView) findViewById(R.id.home_basic_weather_info);
         viewAdvanceWeatherInformation = (WeatherInformationView) findViewById(R.id.home_advance_weather_info);
+        txtAdvanceInfoHint = (TextView) findViewById(R.id.home_advance_info_hint);
     }
 
     @Override
     public void onClick(View view) {
+        txtAdvanceInfoHint.setVisibility(View.GONE);
         if (view.getId() == R.id.home_basic_weather_info) {
             displayAdvanceWeatherInfo(true);
         } else {
             displayAdvanceWeatherInfo(false);
+        }
+    }
+
+    private void setupTaskDescription() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Bitmap icon = BitmapFactory.decodeResource(ResourcesHelper.getResources(),
+                    R.drawable.ic_sun);
+            ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(ResourcesHelper.getString(R.string.app_name), icon, ResourcesHelper.getResources().getColor(R.color.colorPrimary));
+            this.setTaskDescription(taskDescription);
         }
     }
 

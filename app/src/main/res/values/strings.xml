@@ -9,4 +9,6 @@
     <string name="wind_speed">W. Speed</string>
     <string name="wind_direction">W. Direction</string>
     <string name="pressure">Pressure</string>
+    <string name="updating_weather">Updating weather...</string>
+    <string name="advance_information_hint">Tap below to see advance information</string>
 </resources>

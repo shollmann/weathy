@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.shollmann.weathy.R;
 import com.shollmann.weathy.api.model.MainInformation;
 import com.shollmann.weathy.api.model.Wind;
+import com.shollmann.weathy.helper.Constants;
 import com.shollmann.weathy.helper.ResourcesHelper;
 
 public class WeatherInformationView extends LinearLayout {
@@ -54,24 +55,24 @@ public class WeatherInformationView extends LinearLayout {
 
     public void setWeatherInfo(MainInformation mainInformation) {
         txtFirstTitle.setText(ResourcesHelper.getString(R.string.min));
-        txtFirstValue.setText(String.valueOf(mainInformation.getIntTemperatureMin()) + "C"); //TODO remove string hardcoding
+        txtFirstValue.setText(String.valueOf(mainInformation.getIntTemperatureMin()) + Constants.SpecialChars.CELSIUS_DEGREES);
 
         txtSecondTitle.setText(ResourcesHelper.getString(R.string.max));
-        txtSecondValue.setText(String.valueOf(mainInformation.getIntTemperatureMax()) + "C"); //TODO remove string hardcoding
+        txtSecondValue.setText(String.valueOf(mainInformation.getIntTemperatureMax()) + Constants.SpecialChars.CELSIUS_DEGREES);
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.humidity));
-        txtThirdValue.setText(String.valueOf(mainInformation.getHumidity()) + "%"); //TODO remove string hardcoding
+        txtThirdValue.setText(String.valueOf(mainInformation.getHumidity()) + Constants.SpecialChars.PERCENT);
     }
 
     public void setWeatherInfo(MainInformation mainInformation, Wind windInformation) {
         txtFirstTitle.setText(ResourcesHelper.getString(R.string.wind_speed));
-        txtFirstValue.setText(String.valueOf(windInformation.getIntSpeed()) + "km/h"); //TODO remove string hardcoding
+        txtFirstValue.setText(String.valueOf(windInformation.getIntSpeed()) + Constants.SpecialChars.KM_PER_HOUR);
 
         txtSecondTitle.setText(ResourcesHelper.getString(R.string.wind_direction));
-        txtSecondValue.setText(String.valueOf(windInformation.getDegrees()) + "*"); //TODO remove string hardcoding
+        txtSecondValue.setText(String.valueOf(windInformation.getDegrees()) + Constants.SpecialChars.DEGREE);
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.pressure));
-        txtThirdValue.setText(String.valueOf(mainInformation.getPressure()) + "hpa"); //TODO remove string hardcoding
+        txtThirdValue.setText(String.valueOf(mainInformation.getPressure()) + Constants.SpecialChars.HECTOPASCALS);
 
         cardviewContainer.setCardElevation(NO_ELEVATION);
     }

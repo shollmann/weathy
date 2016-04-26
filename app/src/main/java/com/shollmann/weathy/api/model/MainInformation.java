@@ -3,7 +3,9 @@ package com.shollmann.weathy.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MainInformation {
+import java.io.Serializable;
+
+public class MainInformation implements Serializable {
 
     private Double temp;
     private int pressure;
