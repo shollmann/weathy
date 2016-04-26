@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getCurrentWeather() {
-//    showUpdating();
+        Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_LONG);
         CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
         weatherApi.getWeatherForCityName("ushuaia", weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
     }
@@ -65,13 +65,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void success(WeatherReport weatherReport, Response response) {
-//                    hideUpdating();
                 updateWeatherInfo(weatherReport);
             }
 
             @Override
             public void failure(RetrofitError error) {
-//                    hideUpdating();
                 Snackbar.make(coordinatorLayout, R.string.error_get_current_weather, Snackbar.LENGTH_LONG);
             }
         };
@@ -80,6 +78,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void updateWeatherInfo(WeatherReport weatherReport) {
         txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + "C");//TODO Remove hardcoded string
         txtCurrentLocation.setText(weatherReport.getName());
+        txtCurrentTemperature.setVisibility(View.VISIBLE);
+        txtCurrentLocation.setVisibility(View.VISIBLE);
         if (weatherReport.getWeather() != null) {
             imgCurrentWeatherIcon.setImageDrawable(ResourcesHelper.getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
             imgCurrentWeatherIcon.setVisibility(View.VISIBLE);
@@ -88,7 +88,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
-
         viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
         viewBasicWeatherInformation.setVisibility(View.VISIBLE);
     }
