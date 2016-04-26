@@ -58,6 +58,19 @@
                     android:textSize="@dimen/text_material_title"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/home_advance_info_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/home_weather_info_container"
+                android:layout_marginBottom="@dimen/small_space"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/advance_information_hint"
+                android:textColor="@color/secondaryText"
+                android:visibility="gone"/>
+
             <FrameLayout
                 android:id="@+id/home_weather_info_container"
                 android:layout_width="match_parent"

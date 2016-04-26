@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
     private TextView txtCurrentTemperature;
     private TextView txtCurrentLocation;
+    private TextView txtAdvanceInfoHint;
     private ImageView imgCurrentWeatherIcon;
     private WeatherInformationView viewBasicWeatherInformation;
     private WeatherInformationView viewAdvanceWeatherInformation;
@@ -94,6 +95,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
         viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
         viewBasicWeatherInformation.setVisibility(View.VISIBLE);
+        txtAdvanceInfoHint.setVisibility(View.VISIBLE);
     }
 
     private void setupToolbar() {
@@ -108,10 +110,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.home_coordinator_layout);
         viewBasicWeatherInformation = (WeatherInformationView) findViewById(R.id.home_basic_weather_info);
         viewAdvanceWeatherInformation = (WeatherInformationView) findViewById(R.id.home_advance_weather_info);
+        txtAdvanceInfoHint = (TextView) findViewById(R.id.home_advance_info_hint);
     }
 
     @Override
     public void onClick(View view) {
+        txtAdvanceInfoHint.setVisibility(View.GONE);
         if (view.getId() == R.id.home_basic_weather_info) {
             displayAdvanceWeatherInfo(true);
         } else {
