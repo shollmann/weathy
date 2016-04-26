@@ -1,7 +1,9 @@
 
 package com.shollmann.weathy.api.model;
 
-public class Clouds {
+import java.io.Serializable;
+
+public class Clouds implements Serializable{
     private int all;
 
     public int getAll() {

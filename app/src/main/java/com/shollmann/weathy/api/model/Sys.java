@@ -1,7 +1,9 @@
 
 package com.shollmann.weathy.api.model;
 
-public class Sys {
+import java.io.Serializable;
+
+public class Sys implements Serializable {
 
     private int type;
     private int id;
