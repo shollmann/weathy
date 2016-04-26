@@ -2,18 +2,18 @@
 package com.shollmann.weathy.api.model;
 
 public class Wind {
-    private double speed;
+    private Double speed;
     private int deg;
 
-    public double getSpeed() {
+    public Double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(Double speed) {
         this.speed = speed;
     }
 
-    public int getDeg() {
+    public int getDegrees() {
         return deg;
     }
 
@@ -21,4 +21,7 @@ public class Wind {
         this.deg = deg;
     }
 
+    public int getIntSpeed() {
+        return speed.intValue();
+    }
 }

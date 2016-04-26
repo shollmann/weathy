@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.shollmann.weathy.R;
 import com.shollmann.weathy.ui.WeathyApplication;
 
 public class ResourcesHelper {
@@ -80,6 +81,26 @@ public class ResourcesHelper {
             view.setBackgroundDrawable(drawable);
         } else {
             view.setBackground(drawable);
+        }
+    }
+
+    public static Drawable getCurrentWeatherDrawable(String weatherType) {
+        if (Constants.WeatherType.RAIN.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_rain);
+        } else if (Constants.WeatherType.CLEAR.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_sun);
+        } else if (Constants.WeatherType.CLOUDS.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_cloud);
+        } else if (Constants.WeatherType.DRIZZLE.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_drizzle);
+        } else if (Constants.WeatherType.THUDERSTORM.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_storm);
+        } else if (Constants.WeatherType.HAZE.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_haze);
+        } else if (Constants.WeatherType.SNOW.equalsIgnoreCase(weatherType)) {
+            return getDrawable(R.drawable.ic_snow);
+        } else {
+            return getDrawable(R.drawable.ic_cloud);
         }
     }
 }
