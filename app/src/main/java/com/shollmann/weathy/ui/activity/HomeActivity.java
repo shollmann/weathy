@@ -21,6 +21,7 @@ import com.shollmann.weathy.api.baseapi.CallId;
 import com.shollmann.weathy.api.baseapi.CallOrigin;
 import com.shollmann.weathy.api.baseapi.CallType;
 import com.shollmann.weathy.api.model.WeatherReport;
+import com.shollmann.weathy.helper.Constants;
 import com.shollmann.weathy.helper.ResourcesHelper;
 import com.shollmann.weathy.ui.WeathyApplication;
 import com.shollmann.weathy.ui.view.WeatherInformationView;
@@ -81,7 +82,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateWeatherInfo(WeatherReport weatherReport) {
-        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + "C");//TODO Remove hardcoded string
+        txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
         txtCurrentLocation.setText(weatherReport.getName());
         txtCurrentTemperature.setVisibility(View.VISIBLE);
         txtCurrentLocation.setVisibility(View.VISIBLE);

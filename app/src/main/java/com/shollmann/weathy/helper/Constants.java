@@ -34,4 +34,12 @@ public class Constants {
         public static final String HAZE = "Haze";
         public static final String SNOW = "Snow";
     }
+
+    public class SpecialChars {
+        public static final String CELSIUS_DEGREES = "\u2103";
+        public static final String DEGREE = "\u00B0";
+        public static final String PERCENT = "%";
+        public static final String HECTOPASCALS = "hPa";
+        public static final String KM_PER_HOUR = "km/h";
+    }
 }

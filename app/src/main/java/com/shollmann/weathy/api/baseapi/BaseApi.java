@@ -75,7 +75,6 @@ public abstract class BaseApi<T> {
                                            }
                                        }
                 );
-//        TODO Set log level
         builder.setLogLevel(RestAdapter.LogLevel.FULL);
         return builder.build().create(contract);
     }
