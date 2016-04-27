@@ -30,6 +30,7 @@ import com.shollmann.weathy.api.baseapi.CallOrigin;
 import com.shollmann.weathy.api.baseapi.CallType;
 import com.shollmann.weathy.api.model.WeatherReport;
 import com.shollmann.weathy.helper.Constants;
+import com.shollmann.weathy.helper.PreferencesHelper;
 import com.shollmann.weathy.helper.ResourcesHelper;
 import com.shollmann.weathy.ui.WeathyApplication;
 import com.shollmann.weathy.ui.view.WeatherInformationView;
@@ -69,7 +70,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setupToolbar();
         setOnClickListener();
 
-        getCurrentWeather(FIRST_LOCATION_TO_DISPLAY);
+        String lastSearch = PreferencesHelper.getLastSearch();
+
+        getCurrentWeather(TextUtils.isEmpty(lastSearch) ? FIRST_LOCATION_TO_DISPLAY : lastSearch);
     }
 
     private void setOnClickListener() {
@@ -81,7 +84,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (!TextUtils.isEmpty(query)) {
             Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_SHORT).show();
             CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
-            weatherApi.getWeatherForCityName(query.trim(), weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
+            weatherApi.getWeatherForCityName(query, weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
+            PreferencesHelper.setLastSearch(query);
         } else {
             Snackbar.make(coordinatorLayout, R.string.please_enter_a_location, Snackbar.LENGTH_SHORT).show();
         }
@@ -116,19 +120,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             layoutMainWeatherContainer.setVisibility(View.VISIBLE);
             txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
             txtCurrentLocation.setText(weatherReport.getCompleteLocation());
-            txtCurrentTemperature.setVisibility(View.VISIBLE);
-            txtCurrentLocation.setVisibility(View.VISIBLE);
+
+            imgCurrentWeatherIcon.setVisibility(weatherReport.getWeather() != null ? View.VISIBLE : View.INVISIBLE);
             if (weatherReport.getWeather() != null) {
                 imgCurrentWeatherIcon.setImageDrawable(ResourcesHelper.getCurrentWeatherDrawable(weatherReport.getWeather().getMain()));
-                imgCurrentWeatherIcon.setVisibility(View.VISIBLE);
-            } else {
-                imgCurrentWeatherIcon.setVisibility(View.GONE);
             }
 
             viewAdvanceWeatherInformation.setWeatherInfo(weatherReport.getMain(), weatherReport.getWind());
             viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
+            viewAdvanceWeatherInformation.setVisibility(View.INVISIBLE);
             viewBasicWeatherInformation.setVisibility(View.VISIBLE);
-            txtAdvanceInfoHint.setVisibility(View.VISIBLE);
         } else {
             handleWeatherReportFailure();
         }
@@ -231,7 +232,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        getCurrentWeather(query);
+        getCurrentWeather(query.trim());
         searchView.setQuery(Constants.EMPTY_STRING, false);
         searchView.setIconified(true);
         hideKeyboard();

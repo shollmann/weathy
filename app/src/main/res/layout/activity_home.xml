@@ -74,7 +74,7 @@
                 android:maxLines="2"
                 android:text="@string/advance_information_hint"
                 android:textColor="@color/secondaryText"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <FrameLayout
                 android:id="@+id/home_weather_info_container"
@@ -86,13 +86,13 @@
                     android:id="@+id/home_basic_weather_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
+                    android:visibility="visible"/>
 
                 <com.shollmann.weathy.ui.view.WeatherInformationView
                     android:id="@+id/home_advance_weather_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
             </FrameLayout>
         </RelativeLayout>
 
