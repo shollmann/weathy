@@ -24,10 +24,16 @@ public class Wind implements Serializable {
     }
 
     public int getIntSpeed() {
-        return speed.intValue();
+        if (speed != null) {
+            return speed.intValue();
+        }
+        return 0;
     }
 
     public int getIntDegrees() {
-        return deg.intValue();
+        if (deg != null) {
+            return deg.intValue();
+        }
+        return 0;
     }
 }

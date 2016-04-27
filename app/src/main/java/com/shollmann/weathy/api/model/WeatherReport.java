@@ -1,6 +1,8 @@
 
 package com.shollmann.weathy.api.model;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -108,6 +110,14 @@ public class WeatherReport implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getCompleteLocation() {
+        if (sys != null && !TextUtils.isEmpty(sys.getCountry())) {
+            return String.format("%1$s, %2$s", name, sys.getCountry());
+        } else {
+            return name;
+        }
     }
 
     public void setName(String name) {

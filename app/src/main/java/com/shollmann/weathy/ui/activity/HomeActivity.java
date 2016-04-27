@@ -12,6 +12,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shollmann.weathy.R;
@@ -38,11 +40,15 @@ import retrofit.client.Response;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
     private static final int CIRCULAR_REVEAL_DURATION = 400;
+    private static final String FIRST_LOCATION_TO_DISPLAY = "Hong Kong";
 
+    private RelativeLayout layoutMainWeatherContainer;
     private Toolbar toolbar;
     private TextView txtCurrentTemperature;
     private TextView txtCurrentLocation;
     private TextView txtAdvanceInfoHint;
+    private TextView txtNoReport;
+    private TextView txtWaitFirstReport;
     private ImageView imgCurrentWeatherIcon;
     private WeatherInformationView viewBasicWeatherInformation;
     private WeatherInformationView viewAdvanceWeatherInformation;
@@ -53,13 +59,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        findViews();
         weatherApi = WeathyApplication.getApplication().getOpenWeatherApi();
+
+        findViews();
         setupTaskDescription();
         setupToolbar();
         setOnClickListener();
-        //TODO handle previous search
-        getCurrentWeather("Capital Federal");
+
+        getCurrentWeather(FIRST_LOCATION_TO_DISPLAY);
     }
 
     private void setOnClickListener() {
@@ -68,9 +75,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getCurrentWeather(String query) {
-        Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_SHORT).show();
-        CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
-        weatherApi.getWeatherForCityName(query.trim(), weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
+        if (!TextUtils.isEmpty(query)) {
+            Snackbar.make(coordinatorLayout, R.string.updating_weather, Snackbar.LENGTH_SHORT).show();
+            CallId weatherForCityNameCallId = new CallId(CallOrigin.HOME, CallType.WEATHER_REPORT_FOR_CITY_NAME);
+            weatherApi.getWeatherForCityName(query.trim(), weatherForCityNameCallId, generateGetCurrentWeatherForCityCallback());
+        } else {
+            Snackbar.make(coordinatorLayout, R.string.please_enter_a_location, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private Callback<WeatherReport> generateGetCurrentWeatherForCityCallback() {
@@ -83,15 +94,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void failure(RetrofitError error) {
-                Snackbar.make(coordinatorLayout, R.string.error_get_current_weather, Snackbar.LENGTH_LONG).show();
+                handleWeatherReportFailure();
             }
         };
     }
 
+    private void handleWeatherReportFailure() {
+        txtWaitFirstReport.setVisibility(View.GONE);
+        layoutMainWeatherContainer.setVisibility(View.GONE);
+        txtNoReport.setVisibility(View.VISIBLE);
+    }
+
     private void updateWeatherInfo(WeatherReport weatherReport) {
+        txtWaitFirstReport.setVisibility(View.GONE);
+        txtNoReport.setVisibility(View.GONE);
+
         if (weatherReport.getCod() != Constants.ErrorCode._404) {
+            layoutMainWeatherContainer.setVisibility(View.VISIBLE);
             txtCurrentTemperature.setText(String.valueOf(weatherReport.getMain().getIntTemperature()) + Constants.SpecialChars.CELSIUS_DEGREES);
-            txtCurrentLocation.setText(weatherReport.getName());
+            txtCurrentLocation.setText(weatherReport.getCompleteLocation());
             txtCurrentTemperature.setVisibility(View.VISIBLE);
             txtCurrentLocation.setVisibility(View.VISIBLE);
             if (weatherReport.getWeather() != null) {
@@ -105,6 +126,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             viewBasicWeatherInformation.setWeatherInfo(weatherReport.getMain());
             viewBasicWeatherInformation.setVisibility(View.VISIBLE);
             txtAdvanceInfoHint.setVisibility(View.VISIBLE);
+        } else {
+            handleWeatherReportFailure();
         }
     }
 
@@ -113,14 +136,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void findViews() {
+        layoutMainWeatherContainer = (RelativeLayout) findViewById(R.id.home_main_weather_container);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         txtCurrentTemperature = (TextView) findViewById(R.id.home_current_weather_temperature);
         txtCurrentLocation = (TextView) findViewById(R.id.home_current_location);
+        txtAdvanceInfoHint = (TextView) findViewById(R.id.home_advance_info_hint);
+        txtNoReport = (TextView) findViewById(R.id.home_txt_no_results);
+        txtWaitFirstReport = (TextView) findViewById(R.id.home_txt_wait_first_time);
         imgCurrentWeatherIcon = (ImageView) findViewById(R.id.home_current_weather_icon);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.home_coordinator_layout);
         viewBasicWeatherInformation = (WeatherInformationView) findViewById(R.id.home_basic_weather_info);
         viewAdvanceWeatherInformation = (WeatherInformationView) findViewById(R.id.home_advance_weather_info);
-        txtAdvanceInfoHint = (TextView) findViewById(R.id.home_advance_info_hint);
     }
 
     @Override
