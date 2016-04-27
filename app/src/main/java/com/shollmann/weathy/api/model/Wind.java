@@ -3,9 +3,9 @@ package com.shollmann.weathy.api.model;
 
 import java.io.Serializable;
 
-public class Wind implements Serializable{
+public class Wind implements Serializable {
     private Double speed;
-    private int deg;
+    private Double deg;
 
     public Double getSpeed() {
         return speed;
@@ -15,15 +15,25 @@ public class Wind implements Serializable{
         this.speed = speed;
     }
 
-    public int getDegrees() {
+    public Double getDegrees() {
         return deg;
     }
 
-    public void setDeg(int deg) {
+    public void setDeg(Double deg) {
         this.deg = deg;
     }
 
     public int getIntSpeed() {
-        return speed.intValue();
+        if (speed != null) {
+            return speed.intValue();
+        }
+        return 0;
+    }
+
+    public int getIntDegrees() {
+        if (deg != null) {
+            return deg.intValue();
+        }
+        return 0;
     }
 }

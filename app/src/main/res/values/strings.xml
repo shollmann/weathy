@@ -11,4 +11,8 @@
     <string name="pressure">Pressure</string>
     <string name="updating_weather">Updating weather...</string>
     <string name="advance_information_hint">Tap below to see advance information</string>
+    <string name="menu_search">Search</string>
+    <string name="no_results_for_that_location">We couldn\'t find the weather report for that location</string>
+    <string name="home_loading_first_data">Wait, we are sending the weather balloons :)</string>
+    <string name="please_enter_a_location">Please, write a valid a location</string>
 </resources>
