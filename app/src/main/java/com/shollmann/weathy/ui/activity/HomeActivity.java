@@ -40,6 +40,7 @@ import retrofit.client.Response;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
     private static final int CIRCULAR_REVEAL_DURATION = 400;
+    private static final int NO_FLAGS = 0;
     private static final String FIRST_LOCATION_TO_DISPLAY = "Hong Kong";
 
     private RelativeLayout layoutMainWeatherContainer;
@@ -50,6 +51,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtNoReport;
     private TextView txtWaitFirstReport;
     private ImageView imgCurrentWeatherIcon;
+    private SearchView searchView;
+    private MenuItem menuSearch;
     private WeatherInformationView viewBasicWeatherInformation;
     private WeatherInformationView viewAdvanceWeatherInformation;
     private CoordinatorLayout coordinatorLayout;
@@ -219,8 +222,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        MenuItem menuSearch = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuSearch);
+        menuSearch = menu.findItem(R.id.search);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuSearch);
         searchView.setOnQueryTextListener(this);
 
         return super.onPrepareOptionsMenu(menu);
@@ -229,6 +232,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onQueryTextSubmit(String query) {
         getCurrentWeather(query);
+        searchView.setQuery(Constants.EMPTY_STRING, false);
+        searchView.setIconified(true);
         hideKeyboard();
         return true;
     }
@@ -239,7 +244,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) WeathyApplication.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) WeathyApplication.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), NO_FLAGS);
+        }
     }
 }
