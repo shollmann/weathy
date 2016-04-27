@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -11,51 +12,115 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:title="@string/app_name"/>
+        android:title="@string/app_name"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@color/white"/>
 
-    <RelativeLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/home_coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/large_space"
-        android:paddingLeft="@dimen/large_space"
-        android:paddingRight="@dimen/large_space">
+        android:animateLayoutChanges="true"
+        app:layout_behavior="com.shollmann.weathy.ui.behavior.DefaultCoordinatorLayoutBehavior">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/home_main_weather_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/home_basic_weather_info"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:paddingBottom="@dimen/large_space"
+            android:paddingLeft="@dimen/large_space"
+            android:paddingRight="@dimen/large_space"
+            android:visibility="gone"
+            app:layout_behavior="com.shollmann.weathy.ui.behavior.DefaultCoordinatorLayoutBehavior">
 
-            <ImageView
-                android:id="@+id/home_current_weather_icon"
-                android:layout_width="@dimen/home_current_weather_icon_size"
-                android:layout_height="@dimen/home_current_weather_icon_size"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_cloud"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/home_weather_info_container"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/home_current_weather_icon"
+                    android:layout_width="@dimen/home_current_weather_icon_size"
+                    android:layout_height="@dimen/home_current_weather_icon_size"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/home_current_weather_temperature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/primaryText"
+                    android:textSize="@dimen/text_material_display_1"/>
+
+                <TextView
+                    android:id="@+id/home_current_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_space"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_material_title"/>
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/home_advance_info_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/home_weather_info_container"
+                android:layout_marginBottom="@dimen/small_space"
+                android:ellipsize="end"
                 android:gravity="center"
-                android:text="30*C"
-                android:textColor="@color/primaryText"
-                android:textSize="@dimen/text_material_display_1"/>
+                android:maxLines="2"
+                android:text="@string/advance_information_hint"
+                android:textColor="@color/secondaryText"
+                android:visibility="visible"/>
 
-            <TextView
+            <FrameLayout
+                android:id="@+id/home_weather_info_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_space"
-                android:gravity="center"
-                android:text="San Andrés de Giles"
-                android:textSize="@dimen/text_material_title"/>
-        </LinearLayout>
+                android:layout_alignParentBottom="true">
 
-        <include
-            android:id="@+id/home_basic_weather_info"
-            layout="@layout/view_weather_info"
+                <com.shollmann.weathy.ui.view.WeatherInformationView
+                    android:id="@+id/home_basic_weather_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"/>
+
+                <com.shollmann.weathy.ui.view.WeatherInformationView
+                    android:id="@+id/home_advance_weather_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
+            </FrameLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/home_txt_no_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/large_space"
+            android:drawableTop="@drawable/ic_no_results"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:padding="@dimen/large_space"
+            android:text="@string/no_results_for_that_location"
+            android:textSize="@dimen/text_material_header"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/home_txt_wait_first_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:padding="@dimen/large_space"
+            android:text="@string/home_loading_first_data"
+            android:textSize="@dimen/text_material_header"/>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
