@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class MainInformation implements Serializable {
 
     private Double temp;
-    private int pressure;
-    private int humidity;
+    private Double pressure;
+    private Double humidity;
     @SerializedName("temp_min")
     private Double tempMin;
     @SerializedName("temp_max")
@@ -28,19 +28,27 @@ public class MainInformation implements Serializable {
         this.temp = temp;
     }
 
-    public int getPressure() {
+    public Double getPressure() {
         return pressure;
     }
 
-    public void setPressure(int pressure) {
+    public int getIntPressure() {
+        return pressure.intValue();
+    }
+
+    public void setPressure(Double pressure) {
         this.pressure = pressure;
     }
 
-    public int getHumidity() {
+    public Double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public int getIntHumidity() {
+        return humidity.intValue();
+    }
+
+    public void setHumidity(Double humidity) {
         this.humidity = humidity;
     }
 
