@@ -61,7 +61,7 @@ public class WeatherInformationView extends LinearLayout {
         txtSecondValue.setText(String.valueOf(mainInformation.getIntTemperatureMax()) + Constants.SpecialChars.CELSIUS_DEGREES);
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.humidity));
-        txtThirdValue.setText(String.valueOf(mainInformation.getHumidity()) + Constants.SpecialChars.PERCENT);
+        txtThirdValue.setText(String.valueOf(mainInformation.getIntHumidity()) + Constants.SpecialChars.PERCENT);
     }
 
     public void setWeatherInfo(MainInformation mainInformation, Wind windInformation) {
@@ -72,7 +72,7 @@ public class WeatherInformationView extends LinearLayout {
         txtSecondValue.setText(String.valueOf(windInformation.getIntDegrees()) + Constants.SpecialChars.DEGREE);
 
         txtThirdTitle.setText(ResourcesHelper.getString(R.string.pressure));
-        txtThirdValue.setText(String.valueOf(mainInformation.getPressure()) + Constants.SpecialChars.HECTOPASCALS);
+        txtThirdValue.setText(String.valueOf(mainInformation.getIntPressure()) + Constants.SpecialChars.HECTOPASCALS);
 
         cardviewContainer.setCardElevation(NO_ELEVATION);
     }
